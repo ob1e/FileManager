@@ -2,7 +2,6 @@
 //  FolderViewController.swift
 //  FileManager
 //
-//
 
 import UIKit
 
@@ -17,11 +16,11 @@ class FolderViewController: UITableViewController, UINavigationControllerDelegat
     }
     
     var model = Model(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/")
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = model.title
-
+        
     }
     
     @IBAction func createFolderAction(_ sender: Any) {
@@ -29,7 +28,7 @@ class FolderViewController: UITableViewController, UINavigationControllerDelegat
             self.model.addFolder(name: text)
             self.tableView.reloadData()
         }
-
+        
     }
     @IBAction func createFileAction(_ sender: Any) {
         TextPicker.defaultPicker.showPicker(in: self, withTitle: "Add file") { text1, text2 in
@@ -41,29 +40,21 @@ class FolderViewController: UITableViewController, UINavigationControllerDelegat
     @IBAction func addImageAction(_ sender: Any) {
         TextPicker.defaultPicker.showPicker(in: self, withTitle: "Add photo") { text in
             ImagePicker.defaultPicker.showPicker(in: self) { [weak self] imageData in
-                self!.model.saveImageLocally(image: imageData, fileName: text + ".png")
-                
-    //            self?.model.addImage(imageName: "Image_\(String(describing: self?.model.items.count)).png", image: imageData)
-                
-    //            self?.model.saveImage(image: imageData)
-     
+                self?.model.addImage(image: imageData, fileName: text + ".png")
                 self?.tableView.reloadData()
             }
-            
         }
-
-//        self.tableView.reloadData()
     }
     
     // MARK: - Table view data source
-
-
-
+    
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
+        
         return model.items.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
@@ -79,30 +70,30 @@ class FolderViewController: UITableViewController, UINavigationControllerDelegat
         }
         
         cell.contentConfiguration = configuration
-
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-         if model.isPathForItemIndexIsFolder(index: indexPath.row) {
-             FolderViewController.showFolderController(in: navigationController, withPath: model.fullPathForItem(index: indexPath.row))
-         }
+        if model.isPathForItemIndexIsFolder(index: indexPath.row) {
+            FolderViewController.showFolderController(in: navigationController, withPath: model.fullPathForItem(index: indexPath.row))
+        }
         else {
-             let string = try? NSString(contentsOf: URL(filePath: model.fullPathForItem(index: indexPath.row)), encoding: NSUTF8StringEncoding)
-             TextPicker.defaultPicker.showMessage(in: self, title: "File content", message: string as? String ?? "")
-         }
+            let string = try? NSString(contentsOf: URL(filePath: model.fullPathForItem(index: indexPath.row)), encoding: NSUTF8StringEncoding)
+            TextPicker.defaultPicker.showMessage(in: self, title: "File content", message: string as? String ?? "")
+        }
     }
     
-
-
+    
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         
         return true
     }
     
-
-
+    
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             model.deleteItem(withIndex: indexPath.row)
@@ -112,30 +103,30 @@ class FolderViewController: UITableViewController, UINavigationControllerDelegat
         }    
     }
     
-
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

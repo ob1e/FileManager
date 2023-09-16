@@ -1,9 +1,7 @@
 //
 //  Model.swift
 //  FileManager
-//
-//
-//
+
 
 import Foundation
 import UIKit
@@ -24,7 +22,7 @@ class Model {
     }
     
     func addFolder(name: String) {
-       try? FileManager.default.createDirectory(atPath: path + "/" + name, withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(atPath: path + "/" + name, withIntermediateDirectories: true)
     }
     
     func addFile(name: String, content: String) {
@@ -32,48 +30,22 @@ class Model {
         try? content.data(using: .utf8)?.write(to: url)
     }
     
-    func addImage(imageName: String, image: UIImage) {
-        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let data  = image.jpegData(compressionQuality: 0.5)
-        let fileName = imageName
-        let fileURL = directory.appending(path: fileName)
-        try? data!.write(to: fileURL)
-        
-    }
     
     
-    func saveImageLocally(image: UIImage, fileName: String) {
+    func addImage(image: UIImage, fileName: String) {
         
-     // Obtaining the Location of the Documents Directory
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let urls = URL(filePath: path + "/" )
-        // Creating a URL to the name of your file
-        let url = urls.appendingPathComponent(fileName)
+        let documentsDirectory = URL(filePath: path + "/" )
+        let url = documentsDirectory.appendingPathComponent(fileName)
         
         if let data = image.pngData() {
             do {
-                try data.write(to: url) // Writing an Image in the Documents Directory
+                try data.write(to: url)
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    func saveImage(image: UIImage) -> Bool {
-        guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
-            return false
-        }
-        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
-            return false
-        }
-        do {
-            try data.write(to: directory.appendingPathComponent("\(image).png")!)
-            return true
-        } catch {
-            print(error.localizedDescription)
-            return false
-        }
-    }
     
     func fullPathForItem(index: Int) -> String {
         path + "/" + items[index]
@@ -97,18 +69,18 @@ class Model {
 
 /*
  func saveImageLocally(image: UIImage, fileName: String) {
-     
-  // Obtaining the Location of the Documents Directory
-     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-     
-     // Creating a URL to the name of your file
-     let url = documentsDirectory.appendingPathComponent(fileName)
-     
-     if let data = image.pngData() {
-         do {
-             try data.write(to: url) // Writing an Image in the Documents Directory
-         } catch {
-             print("Unable to Write \(fileName) Image Data to Disk")
-         }
-     }
+ 
+ // Obtaining the Location of the Documents Directory
+ let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+ 
+ // Creating a URL to the name of your file
+ let url = documentsDirectory.appendingPathComponent(fileName)
+ 
+ if let data = image.pngData() {
+ do {
+ try data.write(to: url) // Writing an Image in the Documents Directory
+ } catch {
+ print("Unable to Write \(fileName) Image Data to Disk")
+ }
+ }
  }*/

@@ -2,8 +2,7 @@
 //  ImagePicker.swift
 //  FileManager
 //
-//
-//
+
 
 import UIKit
 
@@ -33,10 +32,10 @@ class ImagePicker: NSObject, UIImagePickerControllerDelegate, UINavigationContro
             picker.dismiss(animated: true)
         }
     }
-        
-        
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            picker.dismiss(animated: true)
-        }
-    }
     
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+}
+
